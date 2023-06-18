@@ -1,0 +1,4 @@
+.idea/*
+.env
+kaggle.json
+.ipynb_checkpoints/*
