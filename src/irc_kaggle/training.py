@@ -3,7 +3,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from xgboost import XGBClassifier
 
-SEED = 42
+from src.irc_kaggle.settings import XGB_PARAMS, SEED, LGBM_PARAMS
 
 
 def hyperparameter_grid_search(
@@ -34,31 +34,19 @@ def hyperparameter_grid_search(
 
 
 def xgb_model_for_optimization():
-    xgb_params = {
-        "booster": ["gbtree", "gblinear", "dart"],
-        "max_depth": [2, 4, 6, 8],
-        "lambda": [0, 0.001, 0.01, 0.1, 1],
-        "alpha": [0, 0.001, 0.01, 0.1, 1],
-    }
     xgb_clf = XGBClassifier(scale_pos_weight=4.71, random_state=SEED)
     xgb_name = "XGBlassifier"
-    xgb_arg = {"clf": xgb_clf, "clf_name": xgb_name, "param_grid": xgb_params}
+    xgb_arg = {"clf": xgb_clf, "clf_name": xgb_name, "param_grid": XGB_PARAMS}
     return xgb_arg
 
 
 def lgbm_model_for_optimization():
-    lgbm_params = {
-        "boosting_type": ["gbdt", "dart"],
-        "n_estimators": [20, 50, 100, 150, 200, 250, 300, 350, 400],
-        "reg_alpha": [0, 0.001, 0.01, 0.1],
-        "reg_lambda": [0, 0.001, 0.01, 0.1],
-    }
     lgbm_clf = LGBMClassifier(class_weight="balanced")
     lgbm_name = "LGBMClassifier"
     lgbm_arg = {
         "clf": lgbm_clf,
         "clf_name": lgbm_name,
-        "param_grid": lgbm_params,
+        "param_grid": LGBM_PARAMS,
     }
     return lgbm_arg
 
