@@ -1,3 +1,4 @@
+import time
 from timeit import timeit
 
 import click
@@ -28,10 +29,14 @@ def run_tune_hyperparameters(artefact_dir_path, greeks):
     """
     Command Line Interface for tuning hyperparameters on the Greeks dataset.
     """
+    start_time = time.time()
+    tune_hyperparameters_on_greeks(artefact_dir_path)
     if greeks:
-        timeit(tune_hyperparameters_on_no_greeks(artefact_dir_path))
-    else:
         timeit(tune_hyperparameters_on_greeks(artefact_dir_path))
+    else:
+        timeit(tune_hyperparameters_on_no_greeks(artefact_dir_path))
+    elapsed_time = time.time() - start_time
+    click.echo(f"Elapsed time: {elapsed_time} seconds")
 
 
 if __name__ == '__main__':
