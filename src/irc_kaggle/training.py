@@ -6,7 +6,7 @@ from xgboost import XGBClassifier
 SEED = 42
 
 
-def tune_hyperparameters(
+def hyperparameter_grid_search(
     df, preprocessing_pipeline, classifier, classifier_name, param_grid
 ):
     assert classifier_name != "preprocessing"

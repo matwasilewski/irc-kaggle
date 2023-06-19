@@ -1,6 +1,3 @@
-import os.path
-import pickle
-
 from src.irc_kaggle.dataset import (
     original_greeks_df,
     original_test_df,
@@ -15,9 +12,10 @@ from src.irc_kaggle.preprocessing_utils import (
     scale_epsilon,
 )
 from src.irc_kaggle.training import (
+    hyperparameter_grid_search,
     models_for_hyperparameter_optimization,
-    tune_hyperparameters,
 )
+from src.irc_kaggle.utils.core import save_cv_grid
 
 
 def greeks_pipeline():
@@ -61,6 +59,22 @@ def no_greeks_pipeline():
 def tune_hyperparameters_on_greeks(artefact_dir_path):
     greeks_preprocess_pipeline, train_df, test_df = greeks_pipeline()
     models_params = models_for_hyperparameter_optimization()
+    tuned_grid_searches = tune_hyperparameters(
+        greeks_preprocess_pipeline, train_df, models_params
+    )
+    save_cv_grid(artefact_dir_path, tuned_grid_searches, "greeks")
+
+
+def tune_hyperparameters_on_no_greeks(artefact_dir_path):
+    no_greeks_preprocess_pipeline, train_df, test_df = no_greeks_pipeline()
+    models_params = models_for_hyperparameter_optimization()
+    tuned_grid_searches = tune_hyperparameters(
+        no_greeks_preprocess_pipeline, train_df, models_params
+    )
+    save_cv_grid(artefact_dir_path, tuned_grid_searches, "no_greeks")
+
+
+def tune_hyperparameters(preprocessing_pieline, df, models_params):
     tuned_grid_searches = {}
 
     for model_args in models_params:
@@ -69,16 +83,11 @@ def tune_hyperparameters_on_greeks(artefact_dir_path):
         classifier_name = model_args["clf_name"]
         param_grid = model_args["param_grid"]
 
-        tuned_grid_searches[classifier_name] = tune_hyperparameters(
-            train_df,
-            greeks_preprocess_pipeline,
+        tuned_grid_searches[classifier_name] = hyperparameter_grid_search(
+            df,
+            preprocessing_pieline,
             classifier,
             classifier_name,
             param_grid,
         )
-
-    for tuned_grid in tuned_grid_searches:
-        pickle_name = f"{tuned_grid['clf_name']}_tuned_grid.pkl"
-
-        with open(os.path.join(artefact_dir_path, pickle_name), 'wb') as f:
-            pickle.dump(tuned_grid, f)
+    return tuned_grid_searches
