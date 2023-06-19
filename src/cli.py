@@ -37,7 +37,9 @@ def run_tune_hyperparameters(artefact_dir_path, greeks):
 
     hours, rem = divmod(elapsed_time, 3600)
     minutes, seconds = divmod(rem, 60)
-    click.echo(f"Elapsed time: {int(hours):02}:{int(minutes):02}:{seconds:05.2f}")
+    click.echo(
+        f"Elapsed time: {int(hours):02}:{int(minutes):02}:{seconds:05.2f}"
+    )
 
 
 if __name__ == '__main__':

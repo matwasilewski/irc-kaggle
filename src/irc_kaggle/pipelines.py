@@ -53,7 +53,7 @@ def no_greeks_pipeline():
         train_with_no_greeks_transform_cols
     )
 
-    return train_no_greeks_df, test_no_greeks_df, no_greeks_preprocess_pipeline
+    return no_greeks_preprocess_pipeline, train_no_greeks_df, test_no_greeks_df
 
 
 def tune_hyperparameters_on_greeks(artefact_dir_path):
