@@ -1,9 +1,15 @@
+from catboost import CatBoostClassifier
 from lightgbm import LGBMClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from xgboost import XGBClassifier
 
-from src.irc_kaggle.settings import XGB_PARAMS, SEED, LGBM_PARAMS
+from src.irc_kaggle.settings import (
+    XGB_PARAMS,
+    SEED,
+    LGBM_PARAMS,
+    CATBOOST_PARAMS,
+)
 
 
 def hyperparameter_grid_search(
@@ -51,9 +57,21 @@ def lgbm_model_for_optimization():
     return lgbm_arg
 
 
+def catboost_model_for_optimization():
+    cat_clf = CatBoostClassifier(auto_class_weights="Balanced")
+    cat_name = "CatBoostClassifier"
+    cat_arg = {
+        "clf": cat_clf,
+        "clf_name": cat_name,
+        "param_grid": CATBOOST_PARAMS,
+    }
+    return cat_arg
+
+
 def models_for_hyperparameter_optimization():
     classifier_params = [
         lgbm_model_for_optimization(),
         xgb_model_for_optimization(),
+        catboost_model_for_optimization(),
     ]
     return classifier_params
