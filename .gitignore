@@ -3,3 +3,4 @@
 kaggle.json
 .ipynb_checkpoints/*
 data/*
+poetry.lock
