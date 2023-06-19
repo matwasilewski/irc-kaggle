@@ -1,9 +1,9 @@
+from lightgbm import LGBMClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
-from sklearn.svm import SVC
 from xgboost import XGBClassifier
-from sklearn.pipeline import Pipeline
-from lightgbm import LGBMClassifier
+
+SEED = 42
 
 
 def tune_hyperparameters(
@@ -40,7 +40,7 @@ def xgb_model_for_optimization():
         "lambda": [0, 0.001, 0.01, 0.1, 1],
         "alpha": [0, 0.001, 0.01, 0.1, 1],
     }
-    xgb_clf = XGBClassifier(scale_pos_weight=4.71, random_state=seed)
+    xgb_clf = XGBClassifier(scale_pos_weight=4.71, random_state=SEED)
     xgb_name = "XGBlassifier"
     xgb_arg = {"clf": xgb_clf, "clf_name": xgb_name, "param_grid": xgb_params}
     return xgb_arg

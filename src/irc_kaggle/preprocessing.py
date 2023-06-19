@@ -1,12 +1,12 @@
 import numpy as np
-from sklearn.compose import make_column_transformer
-from sklearn.impute import SimpleImputer, KNNImputer
+from sklearn.compose import make_column_selector, make_column_transformer
+from sklearn.impute import KNNImputer, SimpleImputer
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import (
-    StandardScaler,
     FunctionTransformer,
-    PowerTransformer,
     OrdinalEncoder,
+    PowerTransformer,
+    StandardScaler,
 )
 
 

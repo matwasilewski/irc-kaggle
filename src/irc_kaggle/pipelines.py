@@ -1,21 +1,23 @@
 import os.path
 import pickle
 
-from src.irc_kaggle.preprocessing import make_preprocess_pipeline
-from src.irc_kaggle.preprocessing_utils import (
-    get_transform_cols,
-    get_r2_scores,
-    scale_epsilon,
-    fix_columns_in_test_ds,
-    get_times_from_greeks,
-)
 from src.irc_kaggle.dataset import (
-    original_train_df,
     original_greeks_df,
     original_test_df,
+    original_train_df,
 )
-from src.irc_kaggle.training import models_for_hyperparameter_optimization, \
-    tune_hyperparameters
+from src.irc_kaggle.preprocessing import make_preprocess_pipeline
+from src.irc_kaggle.preprocessing_utils import (
+    fix_columns_in_test_ds,
+    get_r2_scores,
+    get_times_from_greeks,
+    get_transform_cols,
+    scale_epsilon,
+)
+from src.irc_kaggle.training import (
+    models_for_hyperparameter_optimization,
+    tune_hyperparameters,
+)
 
 
 def greeks_pipeline():
@@ -62,12 +64,17 @@ def tune_hyperparameters_on_greeks(artefact_dir_path):
     tuned_grid_searches = {}
 
     for model_args in models_params:
+        print(f"Tuning hyper-parameters for model: {model_args['clf_name']}")
         classifier = model_args["clf"]
         classifier_name = model_args["clf_name"]
         param_grid = model_args["param_grid"]
 
         tuned_grid_searches[classifier_name] = tune_hyperparameters(
-            train_df, greeks_preprocess_pipeline, classifier, classifier_name, param_grid
+            train_df,
+            greeks_preprocess_pipeline,
+            classifier,
+            classifier_name,
+            param_grid,
         )
 
     for tuned_grid in tuned_grid_searches:
@@ -75,4 +82,3 @@ def tune_hyperparameters_on_greeks(artefact_dir_path):
 
         with open(os.path.join(artefact_dir_path, pickle_name), 'wb') as f:
             pickle.dump(tuned_grid, f)
-

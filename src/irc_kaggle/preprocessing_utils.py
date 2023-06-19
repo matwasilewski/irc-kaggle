@@ -3,10 +3,9 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-from scipy.stats import probplot
 import scipy.stats as stats
-
-from sklearn.compose import make_column_transformer, make_column_selector
+from scipy.stats import probplot
+from sklearn.compose import make_column_selector, make_column_transformer
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import MinMaxScaler
 
