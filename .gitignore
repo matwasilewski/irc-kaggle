@@ -5,3 +5,4 @@ kaggle.json
 notebooks/.ipynb_checkpoints/*
 data/*
 poetry.lock
+.flakeheaven_cache/*
