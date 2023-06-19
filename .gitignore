@@ -2,5 +2,6 @@
 .env
 kaggle.json
 .ipynb_checkpoints/*
+notebooks/.ipynb_checkpoints/*
 data/*
 poetry.lock
