@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["0.1.0 <mat.p.wasilewski@gmail.com>"]
 description = ""
 
+[tool.poetry.scripts]
+hyperparameters_greeks = 'src.cli:run_tune_hyperparameters_on_greeks'
+
 [tool.poetry.dependencies]
 python = "^3.9"
 jupyter = "^1.0.0"
