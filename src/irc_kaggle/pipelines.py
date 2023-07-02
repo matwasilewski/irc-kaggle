@@ -74,7 +74,7 @@ def tune_hyperparameters_on_no_greeks(artefact_dir_path):
     save_cv_grid(artefact_dir_path, tuned_grid_searches, "no_greeks")
 
 
-def tune_hyperparameters(preprocessing_pieline, df, models_params):
+def tune_hyperparameters(preprocessing_pipeline, df, models_params):
     tuned_grid_searches = {}
 
     for model_args in models_params:
@@ -85,7 +85,7 @@ def tune_hyperparameters(preprocessing_pieline, df, models_params):
 
         tuned_grid_searches[classifier_name] = hyperparameter_grid_search(
             df,
-            preprocessing_pieline,
+            preprocessing_pipeline,
             classifier,
             classifier_name,
             param_grid,
