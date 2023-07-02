@@ -5,10 +5,10 @@ from sklearn.pipeline import Pipeline
 from xgboost import XGBClassifier
 
 from src.irc_kaggle.settings import (
-    XGB_PARAMS,
+    XGB_GRID_PARAMS,
     SEED,
-    LGBM_PARAMS,
-    CATBOOST_PARAMS,
+    LGBM_GRID_PARAMS,
+    CATBOOST_GRID_PARAMS,
 )
 
 
@@ -42,7 +42,7 @@ def hyperparameter_grid_search(
 def xgb_model_for_optimization():
     xgb_clf = XGBClassifier(scale_pos_weight=4.71, random_state=SEED)
     xgb_name = "XGBlassifier"
-    xgb_arg = {"clf": xgb_clf, "clf_name": xgb_name, "param_grid": XGB_PARAMS}
+    xgb_arg = {"clf": xgb_clf, "clf_name": xgb_name, "param_grid": XGB_GRID_PARAMS}
     return xgb_arg
 
 
@@ -52,7 +52,7 @@ def lgbm_model_for_optimization():
     lgbm_arg = {
         "clf": lgbm_clf,
         "clf_name": lgbm_name,
-        "param_grid": LGBM_PARAMS,
+        "param_grid": LGBM_GRID_PARAMS,
     }
     return lgbm_arg
 
@@ -63,7 +63,7 @@ def catboost_model_for_optimization():
     cat_arg = {
         "clf": cat_clf,
         "clf_name": cat_name,
-        "param_grid": CATBOOST_PARAMS,
+        "param_grid": CATBOOST_GRID_PARAMS,
     }
     return cat_arg
 

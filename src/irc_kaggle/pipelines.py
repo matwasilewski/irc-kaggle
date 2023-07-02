@@ -91,3 +91,22 @@ def tune_hyperparameters(preprocessing_pipeline, df, models_params):
             param_grid,
         )
     return tuned_grid_searches
+
+
+def tune_weights_in_ensamble(preprocessing_pipeline, df, models_params):
+    tuned_grid_searches = {}
+
+    for model_args in models_params:
+        print(f"Tuning hyper-parameters for model: {model_args['clf_name']}")
+        classifier = model_args["clf"]
+        classifier_name = model_args["clf_name"]
+        param_grid = model_args["param_grid"]
+
+        tuned_grid_searches[classifier_name] = hyperparameter_grid_search(
+            df,
+            preprocessing_pipeline,
+            classifier,
+            classifier_name,
+            param_grid,
+        )
+    return tuned_grid_searches
