@@ -4,7 +4,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from xgboost import XGBClassifier
 
-from src.irc_kaggle.settings import (
+from src.irc_kaggle.settings.TuningSettings import (
     XGB_GRID_PARAMS,
     SEED,
     LGBM_GRID_PARAMS,
@@ -42,7 +42,11 @@ def hyperparameter_grid_search(
 def xgb_model_for_optimization():
     xgb_clf = XGBClassifier(scale_pos_weight=4.71, random_state=SEED)
     xgb_name = "XGBlassifier"
-    xgb_arg = {"clf": xgb_clf, "clf_name": xgb_name, "param_grid": XGB_GRID_PARAMS}
+    xgb_arg = {
+        "clf": xgb_clf,
+        "clf_name": xgb_name,
+        "param_grid": XGB_GRID_PARAMS,
+    }
     return xgb_arg
 
 
