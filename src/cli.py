@@ -4,7 +4,7 @@ import click
 
 from src.irc_kaggle.pipelines import (
     tune_hyperparameters_on_greeks,
-    tune_hyperparameters_on_no_greeks,
+    tune_hyperparameters_on_no_greeks, tune_weights_in_ensamble_greeks,
 )
 
 
@@ -24,12 +24,25 @@ from src.irc_kaggle.pipelines import (
     type=bool,
     help='Use Epsilon from Greeks',
 )
-def run_tune_hyperparameters(artefact_dir_path, greeks):
+@click.option(
+    '--voting',
+    required=False,
+    is_flag=True,
+    show_default=True,
+    default=False,
+    type=bool,
+    help='Train Voting Classifier instead',
+)
+def run_tune_hyperparameters(artefact_dir_path, greeks, voting):
     """
     Command Line Interface for tuning hyperparameters on the Greeks dataset.
     """
     start_time = time.time()
-    if greeks:
+    if voting and greeks:
+        tune_weights_in_ensamble_greeks(artefact_dir_path)
+    elif voting and not greeks:
+        raise NotImplementedError("Not implemented tune voting without greeks!")
+    elif greeks:
         tune_hyperparameters_on_greeks(artefact_dir_path)
     else:
         tune_hyperparameters_on_no_greeks(artefact_dir_path)
