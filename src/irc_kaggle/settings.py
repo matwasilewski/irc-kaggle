@@ -1,4 +1,10 @@
 class TuningSettings:
+    VOTING_GRID_PARAMS = {
+        "voting": ["soft"],
+        "weights": [(1, 1, 1), (2, 1, 1), (1, 2, 1), (1, 1, 2), (5, 1, 1),
+                    (1, 5, 1), (1, 1, 5)],
+    }
+
     LGBM_GRID_PARAMS = {
         "boosting_type": ["gbdt", "dart"],
         "n_estimators": [20, 50, 100, 150, 200, 250, 300, 350, 400],
