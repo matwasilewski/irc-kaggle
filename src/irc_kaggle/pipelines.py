@@ -14,6 +14,7 @@ from src.irc_kaggle.preprocessing_utils import (
 from src.irc_kaggle.training import (
     hyperparameter_grid_search,
     models_for_hyperparameter_optimization,
+    models_for_ensamble_voting_optimization,
 )
 from src.irc_kaggle.utils.core import save_cv_grid
 
@@ -74,26 +75,16 @@ def tune_hyperparameters_on_no_greeks(artefact_dir_path):
     save_cv_grid(artefact_dir_path, tuned_grid_searches, "no_greeks")
 
 
+def tune_weights_in_ensamble_greeks(artefact_dir_path):
+    greeks_preprocess_pipeline, train_df, test_df = greeks_pipeline()
+    model_params = models_for_ensamble_voting_optimization(greeks=True)
+    tuned_grid_searches = tune_hyperparameters(
+        greeks_preprocess_pipeline, train_df, model_params
+    )
+    save_cv_grid(artefact_dir_path, tuned_grid_searches, "voting_greeks")
+
+
 def tune_hyperparameters(preprocessing_pipeline, df, models_params):
-    tuned_grid_searches = {}
-
-    for model_args in models_params:
-        print(f"Tuning hyper-parameters for model: {model_args['clf_name']}")
-        classifier = model_args["clf"]
-        classifier_name = model_args["clf_name"]
-        param_grid = model_args["param_grid"]
-
-        tuned_grid_searches[classifier_name] = hyperparameter_grid_search(
-            df,
-            preprocessing_pipeline,
-            classifier,
-            classifier_name,
-            param_grid,
-        )
-    return tuned_grid_searches
-
-
-def tune_weights_in_ensamble(preprocessing_pipeline, df, models_params):
     tuned_grid_searches = {}
 
     for model_args in models_params:
